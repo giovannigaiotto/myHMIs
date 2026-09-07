@@ -7,9 +7,13 @@ non sono screenshot.
 ```
 index.html          struttura e contenuti
 assets/style.css    design system (tema chiaro + scuro)
-assets/hmi.js       logica dei tre display
+assets/hmi.js       logica dei display interattivi
+assets/hmi/*.webp   le schermate reali dell'argano (Design 01)
 assets/favicon.svg  icona
 .nojekyll           dice a GitHub Pages di servire i file così come sono
+
+assets/displays/    PNG originali degli screenshot — NON vengono caricati
+                    (esclusi in .gitignore: 9,9 MB che non servono online)
 ```
 
 ---
@@ -33,8 +37,8 @@ mettici i tuoi numeri veri dove li hai.
 
 ## 2. Pubblicare su GitHub Pages
 
-Il sito pesa circa **79 KB in totale**. Il limite consigliato di GitHub Pages è
-1 GB per repository, quindi hai margine per circa 14.000 volte questo sito.
+Il sito pesa **639 KB in totale**, di cui 560 KB sono le 15 schermate reali in WebP (erano 9,9 MB in PNG). Il limite consigliato di GitHub Pages è
+1 GB per repository, quindi hai margine per circa 1.600 volte questo sito.
 Il problema del peso non esiste, ed è esattamente perché le demo sono codice e
 non immagini.
 
@@ -85,6 +89,27 @@ Poi apri `http://localhost:8321`.
 ---
 
 ## 4. Note tecniche
+
+**Design 01 — le schermate reali.** Non sono screenshot messi in fila: sono le
+catture vere della macchina, rese navigabili. Il tasto in basso a destra apre il
+menu (un unico ritaglio del pannello, sovrapposto a qualunque pagina), le icone
+portano alla pagina corrispondente, il tasto HOME compare solo dove esiste.
+Nessuna transizione, esattamente come sul pannello.
+
+Le zone cliccabili sono definite in percentuale sull'immagine da 1500×856, quindi
+restano allineate a qualsiasi dimensione. Sotto i 720 px la cattura smette di
+rimpicciolirsi e scorre lateralmente dentro la cornice, altrimenti i tasti
+scenderebbero sotto la soglia di tappabilità.
+
+**Il livello operatore.** Nelle catture il badge USER ha un "3" impresso nei
+pixel. Per renderlo dinamico viene ridisegnata solo l'ellisse nera delle spalle
+dell'icona, con la cifra sopra: la copertura sta dentro il nero originale, quindi
+le giunzioni non si vedono. Premendo il tasto USER si scelgono i livelli 1, 2, 3
+o "log out" (badge vuoto).
+
+**Il logo aziendale** è stato rimosso da tutte le catture. Dove una tabella
+passava sopra il logo, il riempimento campiona il colore della riga subito a
+destra, così le righe delle tabelle restano continue invece di spezzarsi.
 
 **Perché i display sono a 800×480 fissi.** Ogni schermata è un canvas di
 800×480 px reali, scalato con una `transform`. È la geometria vera del display,

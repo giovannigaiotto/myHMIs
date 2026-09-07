@@ -111,137 +111,227 @@
   }
 
   /* ======================================================================
-     SCREEN 1 — Main operating screen
+     DESIGN 01 — the real winch panel
+     Captures of the shipped machine. Pressing the keys walks the same
+     navigation the operator walks: no transitions, the page just changes.
+     Geometry below is in % of the 1500x856 capture, measured off the images.
      ====================================================================== */
-  (function mainScreen() {
-    var scr = $('#scr-main');
-    if (!scr) return;
+  (function winchPanel() {
+    var root = document.getElementById('winch');
+    if (!root) return;
 
-    var elForce = $('#m-force'), elArc = $('#m-arc');
-    var elBrake = $('#m-brake'), elBrakeV = $('#m-brake-v');
-    var elOutr  = $('#m-outr'),  elOutrV  = $('#m-outr-v');
-    var elSpeed = $('#m-speed'), elLen = $('#m-len');
-    var elClock = $('#m-clock'), elBlink = $('#m-blink');
-    var elSpark = $('#m-spark'), elPeak = $('#m-peak');
+    var stage = document.getElementById('winch-stage');
+    var page  = document.getElementById('winch-page');
+    var menuI = document.getElementById('winch-menu');
+    var hits  = document.getElementById('winch-hits');
+    var login = document.getElementById('winch-login');
 
-    var ARC_LEN = 308;          // path length of the 98 px semicircle
-    var F_MAX = 30, F_LIMIT = 24;
-    var SPARK_N = 60, SPARK_W = 240, SPARK_H = 44;
+    var GEO = {
+      key:   { left: 92.0, width: 7.7 },     // the right-hand key column
+      user:  { top: 55.9, height: 13.2 },
+      home:  { top: 71.0, height: 13.4 },
+      menu:  { top: 85.6, height: 14.0 },
+      pin:   { top: 41.6, height: 13.2 },    // tower pages only
+      panel: { left: 84.09, top: 7.671, width: 15.91, height: 92.329 }
+    };
+    var COLS = 2, ROWS = 7;
 
-    var force = 18.4, brake = 142, outr = 610, speed = 2.6, len = 318, t = 0;
+    var PAGES = {
+      home:            { file: 'home.webp',          label: 'Main screen' },
+      temperature:     { file: 'temperature.webp',   label: 'Temperature' },
+      details:         { file: 'details.webp',       label: 'Details' },
+      towers:          { file: 'towers.webp',        label: 'Tower positions' },
+      'towers-detail': { file: 'towers-detail.webp', label: 'Position points' },
+      brakes:          { file: 'brakes.webp',        label: 'Brakes' },
+      emergency:       { file: 'emergency.webp',     label: 'Emergency stops' },
+      devices:         { file: 'devices.webp',       label: 'Devices' },
+      motor:           { file: 'motor.webp',         label: 'Electric motor' },
+      safety:          { file: 'safety.webp',        label: 'Safety parameters' },
+      parameters:      { file: 'parameters.webp',    label: 'Parameters' },
+      alarms:          { file: 'alarms.webp',        label: 'Alarms' },
+      encoder:         { file: 'encoder.webp',       label: 'Encoders' },
+      errordisable:    { file: 'errordisable.webp',  label: 'Error disable' }
+    };
 
-    // rope force over the last 60 samples
-    function curve(n) {
-      return Math.max(2, Math.min(F_MAX,
-        18.4 + Math.sin(n / 7) * 4.6 + Math.sin(n / 2.3) * 1.4));
+    // menu grid, read left to right and top to bottom, as on the panel
+    var MENU = [
+      { act: 'login',                     label: 'Login' },
+      { act: 'none',                      label: 'Generator — web visualisation, not linked yet' },
+      { act: 'go', page: 'temperature',   label: 'Temperature' },
+      { act: 'go', page: 'details',       label: 'Details' },
+      { act: 'go', page: 'towers',        label: 'Tower positions' },
+      { act: 'go', page: 'brakes',        label: 'Brakes' },
+      { act: 'go', page: 'emergency',     label: 'Emergency stops' },
+      { act: 'go', page: 'devices',       label: 'Devices' },
+      { act: 'go', page: 'safety',        label: 'Safety parameters' },
+      { act: 'go', page: 'parameters',    label: 'Parameters' },
+      { act: 'go', page: 'alarms',        label: 'Alarms' },
+      { act: 'go', page: 'encoder',       label: 'Encoders' },
+      { act: 'go', page: 'errordisable',  label: 'Error disable' },
+      { act: 'close',                     label: 'Close menu' }
+    ];
+
+    var current = 'home';
+    var menuOpen = false;
+    var level = 3;                       // the panel ships logged in at 3
+
+    /* ---------- helpers ---------- */
+    function place(el, r) {
+      el.style.left   = r.left + '%';
+      el.style.top    = r.top + '%';
+      el.style.width  = r.width + '%';
+      el.style.height = r.height + '%';
     }
-    var hist = [];
-    for (var i = -(SPARK_N - 1); i <= 0; i++) hist.push(curve(i));
-
-    function drawSpark() {
-      var pts = new Array(hist.length);
-      for (var i = 0; i < hist.length; i++) {
-        var x = (i / (SPARK_N - 1)) * SPARK_W;
-        var y = SPARK_H * (1 - hist[i] / F_MAX);
-        pts[i] = x.toFixed(1) + ',' + y.toFixed(1);
+    function mkHit(rect, label, onClick, disabled) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'hit';
+      b.title = label;
+      b.setAttribute('aria-label', label);
+      place(b, rect);
+      if (disabled) {
+        b.disabled = true;
+        b.classList.add('hit--off');
+      } else {
+        b.addEventListener('click', onClick);
       }
-      elSpark.setAttribute('points', pts.join(' '));
-      elPeak.textContent = 'peak ' + Math.max.apply(null, hist).toFixed(1);
+      hits.appendChild(b);
+      return b;
+    }
+    function keyRect(k) {
+      return { left: GEO.key.left, width: GEO.key.width, top: k.top, height: k.height };
+    }
+    function cellRect(i) {
+      var p = GEO.panel;
+      return {
+        left:   p.left + (i % COLS) * (p.width / COLS),
+        top:    p.top + Math.floor(i / COLS) * (p.height / ROWS),
+        width:  p.width / COLS,
+        height: p.height / ROWS
+      };
     }
 
-    function paint() {
-      elForce.textContent = force.toFixed(1);
-      var warn = force >= F_LIMIT;
-      elForce.classList.toggle('is-warn', warn);
-      elArc.style.strokeDashoffset = (ARC_LEN * (1 - Math.min(force / F_MAX, 1))).toFixed(1);
-      elArc.style.stroke = warn ? 'var(--warn)' : 'var(--safe)';
+    /* ---------- the operator-level badge ----------
+       The captures all carry a baked-in "3". We cover just the black
+       shoulder ellipse of the icon and redraw the digit on top, so the
+       level can actually change. The cover sits inside the original
+       black, which is why nothing shows at the seams.                    */
+    var badge = document.createElement('div');
+    badge.className = 'shot__badge';
+    badge.setAttribute('aria-hidden', 'true');
+    badge.innerHTML =
+      '<svg viewBox="0 0 100 100" preserveAspectRatio="none">' +
+        '<ellipse cx="48" cy="50" rx="31" ry="12.5" fill="#000"></ellipse>' +
+        '<text class="lvl" x="48" y="50" fill="#AEE0EF" font-size="26" ' +
+              'font-family="Arial, Helvetica, sans-serif" font-weight="700" ' +
+              'text-anchor="middle" dominant-baseline="central"></text>' +
+      '</svg>';
+    stage.appendChild(badge);
+    var lvlText = badge.querySelector('.lvl');
 
-      elBrakeV.textContent = Math.round(brake);
-      elBrake.style.height = Math.max(0, Math.min(100, brake / 200 * 100)) + '%';
-      elBrake.classList.toggle('is-warn', brake > 156);
-
-      elOutrV.textContent = Math.round(outr);
-      elOutr.style.height = Math.max(0, Math.min(100, outr / 900 * 100)) + '%';
-
-      elSpeed.innerHTML = speed.toFixed(1) + '<i>m/s</i>';
-      elLen.innerHTML   = Math.round(len) + '<i>m</i>';
-
-      drawSpark();
+    function paintBadge() {
+      lvlText.textContent = level ? String(level) : '';
+      // when the menu is open the icon lives in its first cell instead
+      place(badge, menuOpen ? cellRect(0) : keyRect(GEO.user));
     }
 
-    function tick() {
-      t += 1;
-      force = curve(t);
-      hist.push(force);
-      if (hist.length > SPARK_N) hist.shift();
-      brake = 142 + Math.sin(t / 9 + 1.2) * 16;
-      outr  = 610 + Math.sin(t / 13) * 44;
-      speed = Math.max(0, 2.6 + Math.sin(t / 5.5) * 1.3);
-      len   = 318 + Math.sin(t / 11) * 26;
-      paint();
-
-      var d = new Date();
-      elClock.textContent =
-        String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+    /* ---------- navigation ---------- */
+    function show(id) {
+      var p = PAGES[id];
+      if (!p) return;
+      current = id;
+      page.src = 'assets/hmi/' + p.file;
+      page.alt = 'Winch control unit — ' + p.label;
+      root.setAttribute('data-page', id);
+      build();
+    }
+    function setMenu(open) {
+      menuOpen = open;
+      menuI.hidden = !open;
+      build();
+    }
+    function closeLogin() {
+      login.hidden = true;
+      root.classList.remove('is-login');
+    }
+    function setLevel(n) {
+      level = n;
+      closeLogin();
+      build();
+    }
+    function openLogin() {
+      login.hidden = false;
+      root.classList.add('is-login');
+      var b = login.querySelector('button');
+      if (b) b.focus();
     }
 
-    // 1 s heartbeat — the machine's own blink period
-    var blinkOn = false;
-    function blink() {
-      blinkOn = !blinkOn;
-      elBlink.classList.toggle('is-on', blinkOn);
+    /* ---------- (re)build the hotspots for the current state ---------- */
+    function build() {
+      hits.textContent = '';
+
+      // the menu key is on every page
+      mkHit(keyRect(GEO.menu), menuOpen ? 'Close menu' : 'Open menu',
+            function () { setMenu(!menuOpen); });
+
+      if (menuOpen) {
+        MENU.forEach(function (m, i) {
+          if (m.act === 'login') {
+            mkHit(cellRect(i), m.label, function () { setMenu(false); openLogin(); });
+          } else if (m.act === 'close') {
+            mkHit(cellRect(i), m.label, function () { setMenu(false); });
+          } else if (m.act === 'none') {
+            mkHit(cellRect(i), m.label, null, true);
+          } else {
+            (function (target) {
+              mkHit(cellRect(i), m.label, function () { setMenu(false); show(target); });
+            })(m.page);
+          }
+        });
+      } else {
+        mkHit(keyRect(GEO.user),
+              'Operator level — currently ' + (level ? level : 'logged out'),
+              openLogin);
+
+        if (current !== 'home') {
+          mkHit(keyRect(GEO.home), 'Home', function () { show('home'); });
+        }
+        // the tower page carries a pin key that opens the detailed points
+        if (current === 'towers') {
+          mkHit(keyRect(GEO.pin), 'Position points', function () { show('towers-detail'); });
+        }
+        if (current === 'towers-detail') {
+          mkHit(keyRect(GEO.pin), 'Back to tower positions', function () { show('towers'); });
+        }
+        // the device tiles open the electric-motor diagnostics
+        if (current === 'devices') {
+          mkHit({ left: 4, top: 28, width: 46, height: 48 }, 'Electric motor',
+                function () { show('motor'); });
+        }
+      }
+      paintBadge();
     }
 
-    paint();
-    var tId = null, bId = null;
-    whenVisible(scr,
-      function () {
-        if (!tId && !REDUCED) { tick(); tId = setInterval(tick, 900); }
-        if (!bId && !REDUCED) { bId = setInterval(blink, 1000); }
-      },
-      function () {
-        clearInterval(tId); tId = null;
-        clearInterval(bId); bId = null;
+    /* ---------- login panel ---------- */
+    $$('button', login).forEach(function (b) {
+      b.addEventListener('click', function () { setLevel(Number(b.dataset.level)); });
+    });
+    root.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      if (!login.hidden) closeLogin();
+      else if (menuOpen) setMenu(false);
+    });
+
+    // warm the other pages once the panel has been seen, so pressing a key
+    // does not wait on the network
+    whenVisible(root, function () {
+      Object.keys(PAGES).forEach(function (k) {
+        var i = new Image();
+        i.src = 'assets/hmi/' + PAGES[k].file;
       });
+    }, function () {});
 
-    /* ---- drawer: slides over the page, auto-closes after 10 s idle ---- */
-    var drawer = $('#m-drawer'), scrim = $('#m-scrim'), count = $('#m-count');
-    var TIMEOUT = 10;
-    var left = TIMEOUT, cId = null;
-
-    function open() {
-      drawer.classList.add('is-open');
-      drawer.setAttribute('aria-hidden', 'false');
-      scrim.classList.add('is-on');
-      restart();
-    }
-    function close() {
-      drawer.classList.remove('is-open');
-      drawer.setAttribute('aria-hidden', 'true');
-      scrim.classList.remove('is-on');
-      clearInterval(cId); cId = null;
-    }
-    function restart() {
-      left = TIMEOUT;
-      count.textContent = 'closes in ' + left + ' s';
-      clearInterval(cId);
-      cId = setInterval(function () {
-        left -= 1;
-        count.textContent = left > 0 ? 'closes in ' + left + ' s' : 'closing';
-        if (left <= 0) close();
-      }, 1000);
-    }
-
-    $('#m-menu').addEventListener('click', function () {
-      drawer.classList.contains('is-open') ? close() : open();
-    });
-    $('#m-close').addEventListener('click', close);
-    scrim.addEventListener('click', close);
-    // any interaction inside the drawer resets the timeout, as on the machine
-    drawer.addEventListener('click', function (e) {
-      if (e.target.closest('.di')) restart();
-    });
-    drawer.addEventListener('pointermove', restart);
+    build();
   })();
 
   /* ======================================================================

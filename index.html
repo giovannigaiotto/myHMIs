@@ -48,7 +48,7 @@
   <section class="hero">
     <div class="wrap">
       <p class="kicker reveal">PLC &amp; HMI Developer</p>
-      <h1 class="hero__title reveal">Interfaces for machines that don&rsquo;t have a&nbsp;second&nbsp;screen.</h1>
+      <h1 class="hero__title reveal">Interfaces for machines that don&rsquo;t ask&nbsp;questions.</h1>
       <p class="lede reveal">
         I design and build the operator side of industrial control systems &mdash; cable cranes,
         winches, mobile hydraulics. Fixed resolution, direct sunlight, work gloves, one operator,
@@ -83,131 +83,64 @@
       <h2 class="sec"><span class="sec__idx">01</span><span class="sec__t">Selected work</span></h2>
     </div>
 
-    <!-- ---------- CASE 1 ---------- -->
+    <!-- ---------- CASE 1 : the real winch display ---------- -->
     <article class="case wrap reveal">
       <div class="case__head">
         <div>
-          <p class="case__meta">Cable crane control unit &middot; 7&Prime; display</p>
-          <h3 class="case__title">Main operating screen</h3>
+          <p class="case__meta">Cable-crane winch &middot; touch panel &middot; in service</p>
+          <h3 class="case__title">Winch control unit</h3>
         </div>
-        <p class="case__role"><span>Role</span> Interface design, visualisation, control logic</p>
+        <p class="case__role"><span>Role</span> Screen design, navigation, alarm and parameter system</p>
       </div>
 
       <figure class="device">
         <div class="device__bezel">
-          <div class="viewport">
-            <div class="screen" id="scr-main">
-
-              <div class="hmi-bar">
-                <div class="hmi-bar__id">DSS200<i>&middot;</i>CABLE CRANE</div>
-                <div class="hmi-bar__pills">
-                  <span class="pill pill--ok"><i></i>READY</span>
-                  <span class="pill"><i></i>HYD 186 bar</span>
-                </div>
-                <div class="hmi-bar__right">
-                  <span class="blinker" id="m-blink" aria-hidden="true"></span>
-                  <span class="hmi-bar__clock" id="m-clock">14:32</span>
-                </div>
+          <div class="shot" id="winch">
+            <div class="shot__inner" id="winch-stage">
+            <img class="shot__page" id="winch-page"
+                 src="assets/hmi/home.webp" width="1500" height="856"
+                 alt="Winch control unit, main screen">
+            <img class="shot__menu" id="winch-menu" src="assets/hmi/menu.webp"
+                 alt="" aria-hidden="true" hidden>
+            <div class="shot__hits" id="winch-hits"></div>
+            <div class="shot__login" id="winch-login" hidden>
+              <p class="shot__login-t">Operator level</p>
+              <div class="shot__login-b">
+                <button type="button" data-level="1">1</button>
+                <button type="button" data-level="2">2</button>
+                <button type="button" data-level="3">3</button>
+                <button type="button" data-level="0">Log out</button>
               </div>
-
-              <div class="hmi-body">
-
-                <div class="col col--rail">
-                  <div class="vbar">
-                    <div class="vbar__label">Brake<br>pressure</div>
-                    <div class="vbar__track">
-                      <div class="vbar__fill" id="m-brake"></div>
-                      <div class="vbar__limit"></div>
-                    </div>
-                    <div class="vbar__val"><b id="m-brake-v">142</b><span>bar</span></div>
-                  </div>
-                  <div class="vbar">
-                    <div class="vbar__label">Outrigger<br>travel</div>
-                    <div class="vbar__track">
-                      <div class="vbar__fill vbar__fill--alt" id="m-outr"></div>
-                    </div>
-                    <div class="vbar__val"><b id="m-outr-v">610</b><span>mm</span></div>
-                  </div>
-                </div>
-
-                <div class="col col--main">
-                  <svg class="arc" viewBox="0 0 240 148" aria-hidden="true">
-                    <path class="arc__bg"   d="M22 130 A98 98 0 0 1 218 130"></path>
-                    <path class="arc__warn" d="M199.3 72.4 A98 98 0 0 1 218 130"></path>
-                    <path class="arc__val" id="m-arc" d="M22 130 A98 98 0 0 1 218 130"></path>
-                  </svg>
-                  <div class="readout">
-                    <div class="readout__v" id="m-force">18.4</div>
-                    <div class="readout__u">kN <span>rope force</span></div>
-                  </div>
-                  <div class="readout__lim"><span>0</span><span>limit 24.0</span><span>30</span></div>
-
-                  <div class="trend">
-                    <div class="trend__top"><span>Load trend &middot; 60 s</span><b id="m-peak">peak 23.1</b></div>
-                    <svg class="trend__svg" viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
-                      <line class="trend__lim" x1="0" y1="8.8" x2="240" y2="8.8"></line>
-                      <polyline class="trend__line" id="m-spark" points=""></polyline>
-                    </svg>
-                  </div>
-
-                  <div class="notice"><i></i><span>Rope inspection due in 12 h</span></div>
-                </div>
-
-                <div class="col col--aux">
-                  <div class="kv"><span>Drum &Oslash;</span><b id="m-drum">412<i>mm</i></b></div>
-                  <div class="kv"><span>Line speed</span><b id="m-speed">2.6<i>m/s</i></b></div>
-                  <div class="kv"><span>Payout</span><b id="m-len">318<i>m</i></b></div>
-                  <div class="kv kv--warn"><span>Coolant</span><b id="m-cool">94<i>&deg;C</i></b></div>
-                </div>
-
-              </div>
-
-              <div class="softkeys">
-                <button class="sk" type="button">Manual</button>
-                <button class="sk" type="button">Auto</button>
-                <button class="sk" type="button">Service</button>
-                <button class="sk sk--accent" type="button" id="m-menu">Menu</button>
-              </div>
-
-              <div class="scrim" id="m-scrim"></div>
-              <aside class="drawer" id="m-drawer" aria-hidden="true">
-                <div class="drawer__head">Menu<button class="drawer__x" type="button" id="m-close" aria-label="Close menu">&#10005;</button></div>
-                <nav class="drawer__list">
-                  <button type="button" class="di"><i class="di__i di__i--home"></i>Main</button>
-                  <button type="button" class="di"><i class="di__i di__i--alarm"></i>Alarms<em>2</em></button>
-                  <button type="button" class="di"><i class="di__i di__i--gear"></i>Parameters</button>
-                  <button type="button" class="di"><i class="di__i di__i--io"></i>I/O monitor</button>
-                  <button type="button" class="di"><i class="di__i di__i--globe"></i>Language</button>
-                </nav>
-                <div class="drawer__foot"><span id="m-count">closes in 10 s</span></div>
-              </aside>
-
+            </div>
             </div>
           </div>
         </div>
         <figcaption class="device__cap">
-          Live rebuild. The drawer keeps the original behaviour: it slides over the page rather than
-          replacing it, and closes itself after 10 s of inactivity.
+          The real panel, page by page. Press the menu key at the bottom right to open the
+          navigation, then any icon to jump to that page &mdash; no transitions, exactly as on
+          the machine. The operator level is switchable: press the <b>USER</b> key.
         </figcaption>
       </figure>
 
       <div class="notes">
         <div class="note">
           <h4>Problem</h4>
-          <p>The operator works outdoors with the machine in motion. They cannot hunt for a value,
-             and they cannot lose sight of the load while opening a menu.</p>
+          <p>One winch, sixteen screens: live driving values, brakes, tower positions, motor
+             diagnostics, two separate parameter sets and the alarm log. All of it reachable by an
+             operator wearing gloves, and none of it allowed to hide the machine state.</p>
         </div>
         <div class="note">
           <h4>Decision</h4>
-          <p>One number owns the screen &mdash; rope force, the value that decides whether the next move
-             is safe. Everything else is peripheral: bars for trends, digits for reference. The menu
-             slides <em>over</em> the screen and closes itself, so machine state is never more than
-             a glance away.</p>
+          <p>A single navigation key, always in the same corner, opening a grid of pictograms
+             rather than a list of words &mdash; the panel ships in four languages and an icon does
+             not need translating. The header strip with winch status, load and brake pressure
+             stays on every page.</p>
         </div>
         <div class="note">
           <h4>Result</h4>
-          <p>The primary reading stays legible at arm&rsquo;s length in daylight, and there is no screen
-             the operator can get stuck inside &mdash; every path returns home on its own.</p>
+          <p>Any page is two presses from any other. Access is gated by operator level, so the
+             parameter and safety pages are visible but not editable to whoever should not touch
+             them.</p>
         </div>
       </div>
     </article>
@@ -491,7 +424,7 @@
     <span class="sb sb--ok"><i aria-hidden="true"></i>0 errors</span>
     <span class="sb sb--warn"><i aria-hidden="true"></i>0 warnings</span>
     <span class="sb sb--file">giovanni_gaiotto.portfolio</span>
-    <span class="sb sb--push">no framework &middot; no tracking &middot; 79 KB</span>
+    <span class="sb sb--push">no framework &middot; no build step &middot; no tracking</span>
     <span class="sb">&copy; <span id="yr">2026</span> Giovanni Gaiotto</span>
   </div>
 </footer>

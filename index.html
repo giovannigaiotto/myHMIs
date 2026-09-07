@@ -15,7 +15,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;0,800;1,400&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="assets/style.css">
 </head>
@@ -55,12 +55,20 @@
         no manual in reach. Every pixel has to earn its place.
       </p>
 
-      <ul class="specs reveal" aria-label="Working constraints">
-        <li><span>Canvas</span><b>800 &times; 480</b></li>
-        <li><span>Input</span><b>4 soft keys</b></li>
-        <li><span>Ambient</span><b>&minus;20 &hellip; 60 &deg;C</b></li>
-        <li><span>Locales</span><b>DE &middot; IT &middot; EN &middot; FR</b></li>
-      </ul>
+      <div class="varblock reveal">
+        <div class="varblock__head">
+          <span class="varblock__dot" aria-hidden="true"></span>GVL_Constraints
+          <em>Declaration</em>
+        </div>
+<pre class="varblock__code"><span class="c">(* what the hardware decides before you draw anything *)</span>
+<span class="k">VAR_GLOBAL</span>
+    canvas    : <span class="k">RESOLUTION</span>  := 800 x 480;        <span class="c">(* fixed. no reflow *)</span>
+    softkeys  : <span class="k">INT</span>         := 4;
+    ambient   : <span class="k">TEMPERATURE</span> := -20 .. 60;        <span class="c">(* &deg;C, direct sun *)</span>
+    locales   : <span class="k">ARRAY</span>       := [DE, IT, EN, FR];
+    operator  : <span class="k">HANDS</span>       := GLOVED;
+<span class="k">END_VAR</span></pre>
+      </div>
 
       <p class="hero__note reveal">
         The three screens below are not screenshots. They are the interfaces, rebuilt to run
@@ -463,14 +471,14 @@
       <h2 class="sec"><span class="sec__idx">04</span><span class="sec__t">Contact</span></h2>
       <p class="contact__lede">Open to work on control systems, HMI and machine interfaces.</p>
       <div class="contact__links">
-        <a class="clink" href="https://www.linkedin.com/in/YOUR-LINKEDIN/" target="_blank" rel="noopener">
+        <a class="clink" href="https://www.linkedin.com/in/giovanni-gaiotto-353bb0270/" target="_blank" rel="noopener">
           <span>LinkedIn</span><b>Connect &rarr;</b>
         </a>
         <a class="clink" href="mailto:gaiottogiovanni2004@gmail.com">
           <span>Email</span><b>gaiottogiovanni2004@gmail.com</b>
         </a>
-        <a class="clink" href="https://github.com/YOUR-GITHUB" target="_blank" rel="noopener">
-          <span>GitHub</span><b>@YOUR-GITHUB &rarr;</b>
+        <a class="clink" href="https://github.com/giovannigaiotto" target="_blank" rel="noopener">
+          <span>GitHub</span><b>@giovannigaiotto &rarr;</b>
         </a>
       </div>
     </div>
@@ -478,10 +486,13 @@
 
 </main>
 
-<footer class="foot">
-  <div class="wrap foot__in">
-    <span>&copy; <span id="yr">2026</span> Giovanni Gaiotto</span>
-    <span class="foot__note">Built by hand. No framework, no tracking, no analytics.</span>
+<footer class="statusbar">
+  <div class="wrap sb__in">
+    <span class="sb sb--ok"><i aria-hidden="true"></i>0 errors</span>
+    <span class="sb sb--warn"><i aria-hidden="true"></i>0 warnings</span>
+    <span class="sb sb--file">giovanni_gaiotto.portfolio</span>
+    <span class="sb sb--push">no framework &middot; no tracking &middot; 79 KB</span>
+    <span class="sb">&copy; <span id="yr">2026</span> Giovanni Gaiotto</span>
   </div>
 </footer>
 

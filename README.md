@@ -18,10 +18,9 @@ assets/favicon.svg  icona
 
 Apri `index.html` e cerca queste stringhe:
 
-| Cerca | Sostituisci con |
-|---|---|
-| `YOUR-LINKEDIN` | il tuo handle LinkedIn (2 occorrenze: href) |
-| `YOUR-GITHUB` | il tuo username GitHub (2 occorrenze: href e testo) |
+LinkedIn è già impostato sul tuo profilo reale. **GitHub è impostato su
+`giovannigaiotto`**: se scegli un username diverso quando crei l'account,
+cerca `giovannigaiotto` in `index.html` e sostituiscilo (2 occorrenze).
 
 L'email è già impostata su `gaiottogiovanni2004@gmail.com` — se preferisci non
 esporla pubblicamente, togli quel blocco `<a class="clink" href="mailto:...">`.
@@ -34,7 +33,7 @@ mettici i tuoi numeri veri dove li hai.
 
 ## 2. Pubblicare su GitHub Pages
 
-Il sito pesa circa **75 KB in totale**. Il limite consigliato di GitHub Pages è
+Il sito pesa circa **79 KB in totale**. Il limite consigliato di GitHub Pages è
 1 GB per repository, quindi hai margine per circa 14.000 volte questo sito.
 Il problema del peso non esiste, ed è esattamente perché le demo sono codice e
 non immagini.
@@ -94,10 +93,18 @@ non un'approssimazione responsive. Sotto una certa larghezza lo schermo smette
 di rimpicciolirsi (scala minima 0.62) e scorre lateralmente dentro la cornice,
 perché sotto quella soglia i testi sulla vetro non sarebbero più leggibili.
 
-**Palette.** Identita da tavolo da disegno tecnico: inchiostro blu notte
-(`#0A1E35`) su carta azzurrata (`#F4F7FA`), accento azzurro (`#0B6CB5`) e un
-azzurro chiaro (`#33B4E8`) per tutto cio che deve leggersi come segnale. L'hero
-ha una griglia millimetrata appena percettibile che sfuma verso il basso.
+**Linguaggio visivo.** L'aspetto e preso dall'editor CODESYS, ma solo per quello
+che li funziona: fondo bianco, monospaziato come font principale, e la logica
+cromatica del syntax highlighting (parole chiave blu `#1A46C7`, commenti verde
+`#0E7A3C` sempre in corsivo, tutto il resto quasi nero). Lasciati fuori i grigi
+sporchi, i bordi in rilievo e le toolbar affollate.
+
+Tre elementi ripresi dall'IDE:
+- il **blocco `VAR_GLOBAL`** nell'hero, che dichiara i vincoli di progetto come
+  li dichiarerebbe la macchina
+- i **titoli Problem / Decision / Result** scritti come commenti ST `(* ... *)`
+- la **status bar** in fondo alla pagina, con lo stesso ritmo di quella di CODESYS
+
 Tutti i colori stanno in variabili CSS in cima a `style.css`: per cambiare tono
 al sito basta toccare quel blocco.
 
@@ -106,8 +113,10 @@ dalla palette del sito: sono i colori funzionali della macchina, non del brand,
 e restano identici in tema chiaro e scuro. La sezione "The system underneath"
 li documenta come tali.
 
-**Font.** Bricolage Grotesque (titoli), Archivo (testo), IBM Plex Mono (dati e
-codici). Arrivano da Google Fonts, quindi non pesano sul repository.
+**Font.** JetBrains Mono (titoli, dati, codice) e IBM Plex Sans (testo corrente).
+Il monospaziato e un font da IDE, non una citazione: e la stessa famiglia di
+strumenti in cui lavori. Arrivano da Google Fonts, quindi non pesano sul
+repository.
 
 **Temi.** Chiaro di default, scuro automatico se il sistema lo richiede, più un
 interruttore in alto a destra che ha la precedenza e viene ricordato.

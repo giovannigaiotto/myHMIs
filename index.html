@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Giovanni Gaiotto — PLC &amp; HMI Developer</title>
+<meta name="description" content="Control-system interfaces for heavy machinery. Fixed-resolution displays, alarm systems and operator logic for cable cranes, winches and mobile hydraulics.">
+<meta name="color-scheme" content="light dark">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Giovanni Gaiotto — PLC &amp; HMI Developer">
+<meta property="og:description" content="Control-system interfaces for heavy machinery. Every pixel has to earn its place.">
+
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<a class="skip" href="#work">Skip to work</a>
+
+<header class="nav">
+  <a href="#top" class="nav__brand">
+    <span class="nav__mark" aria-hidden="true"></span>
+    <span>Giovanni Gaiotto</span>
+  </a>
+  <nav class="nav__links" aria-label="Sections">
+    <a href="#work">Work</a>
+    <a href="#approach">Approach</a>
+    <a href="#system">System</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <button class="theme" id="theme" type="button" aria-label="Switch colour theme">
+    <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+      <circle cx="12" cy="12" r="4.2"></circle>
+      <path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4L17 7M7 17l-1.6 1.6"></path>
+    </svg>
+  </button>
+</header>
+
+<main id="top">
+
+  <!-- ============================ HERO ============================ -->
+  <section class="hero">
+    <div class="wrap">
+      <p class="kicker reveal">PLC &amp; HMI Developer</p>
+      <h1 class="hero__title reveal">Interfaces for machines that don&rsquo;t have a&nbsp;second&nbsp;screen.</h1>
+      <p class="lede reveal">
+        I design and build the operator side of industrial control systems &mdash; cable cranes,
+        winches, mobile hydraulics. Fixed resolution, direct sunlight, work gloves, one operator,
+        no manual in reach. Every pixel has to earn its place.
+      </p>
+
+      <ul class="specs reveal" aria-label="Working constraints">
+        <li><span>Canvas</span><b>800 &times; 480</b></li>
+        <li><span>Input</span><b>4 soft keys</b></li>
+        <li><span>Ambient</span><b>&minus;20 &hellip; 60 &deg;C</b></li>
+        <li><span>Locales</span><b>DE &middot; IT &middot; EN &middot; FR</b></li>
+      </ul>
+
+      <p class="hero__note reveal">
+        The three screens below are not screenshots. They are the interfaces, rebuilt to run
+        in your browser &mdash; menus, alarm logic and escalation states included. Press things.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================ WORK ============================ -->
+  <section id="work" class="section">
+    <div class="wrap">
+      <h2 class="sec"><span class="sec__idx">01</span><span class="sec__t">Selected work</span></h2>
+    </div>
+
+    <!-- ---------- CASE 1 ---------- -->
+    <article class="case wrap reveal">
+      <div class="case__head">
+        <div>
+          <p class="case__meta">Cable crane control unit &middot; 7&Prime; display</p>
+          <h3 class="case__title">Main operating screen</h3>
+        </div>
+        <p class="case__role"><span>Role</span> Interface design, visualisation, control logic</p>
+      </div>
+
+      <figure class="device">
+        <div class="device__bezel">
+          <div class="viewport">
+            <div class="screen" id="scr-main">
+
+              <div class="hmi-bar">
+                <div class="hmi-bar__id">DSS200<i>&middot;</i>CABLE CRANE</div>
+                <div class="hmi-bar__pills">
+                  <span class="pill pill--ok"><i></i>READY</span>
+                  <span class="pill"><i></i>HYD 186 bar</span>
+                </div>
+                <div class="hmi-bar__right">
+                  <span class="blinker" id="m-blink" aria-hidden="true"></span>
+                  <span class="hmi-bar__clock" id="m-clock">14:32</span>
+                </div>
+              </div>
+
+              <div class="hmi-body">
+
+                <div class="col col--rail">
+                  <div class="vbar">
+                    <div class="vbar__label">Brake<br>pressure</div>
+                    <div class="vbar__track">
+                      <div class="vbar__fill" id="m-brake"></div>
+                      <div class="vbar__limit"></div>
+                    </div>
+                    <div class="vbar__val"><b id="m-brake-v">142</b><span>bar</span></div>
+                  </div>
+                  <div class="vbar">
+                    <div class="vbar__label">Outrigger<br>travel</div>
+                    <div class="vbar__track">
+                      <div class="vbar__fill vbar__fill--alt" id="m-outr"></div>
+                    </div>
+                    <div class="vbar__val"><b id="m-outr-v">610</b><span>mm</span></div>
+                  </div>
+                </div>
+
+                <div class="col col--main">
+                  <svg class="arc" viewBox="0 0 240 148" aria-hidden="true">
+                    <path class="arc__bg"   d="M22 130 A98 98 0 0 1 218 130"></path>
+                    <path class="arc__warn" d="M199.3 72.4 A98 98 0 0 1 218 130"></path>
+                    <path class="arc__val" id="m-arc" d="M22 130 A98 98 0 0 1 218 130"></path>
+                  </svg>
+                  <div class="readout">
+                    <div class="readout__v" id="m-force">18.4</div>
+                    <div class="readout__u">kN <span>rope force</span></div>
+                  </div>
+                  <div class="readout__lim"><span>0</span><span>limit 24.0</span><span>30</span></div>
+
+                  <div class="trend">
+                    <div class="trend__top"><span>Load trend &middot; 60 s</span><b id="m-peak">peak 23.1</b></div>
+                    <svg class="trend__svg" viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+                      <line class="trend__lim" x1="0" y1="8.8" x2="240" y2="8.8"></line>
+                      <polyline class="trend__line" id="m-spark" points=""></polyline>
+                    </svg>
+                  </div>
+
+                  <div class="notice"><i></i><span>Rope inspection due in 12 h</span></div>
+                </div>
+
+                <div class="col col--aux">
+                  <div class="kv"><span>Drum &Oslash;</span><b id="m-drum">412<i>mm</i></b></div>
+                  <div class="kv"><span>Line speed</span><b id="m-speed">2.6<i>m/s</i></b></div>
+                  <div class="kv"><span>Payout</span><b id="m-len">318<i>m</i></b></div>
+                  <div class="kv kv--warn"><span>Coolant</span><b id="m-cool">94<i>&deg;C</i></b></div>
+                </div>
+
+              </div>
+
+              <div class="softkeys">
+                <button class="sk" type="button">Manual</button>
+                <button class="sk" type="button">Auto</button>
+                <button class="sk" type="button">Service</button>
+                <button class="sk sk--accent" type="button" id="m-menu">Menu</button>
+              </div>
+
+              <div class="scrim" id="m-scrim"></div>
+              <aside class="drawer" id="m-drawer" aria-hidden="true">
+                <div class="drawer__head">Menu<button class="drawer__x" type="button" id="m-close" aria-label="Close menu">&#10005;</button></div>
+                <nav class="drawer__list">
+                  <button type="button" class="di"><i class="di__i di__i--home"></i>Main</button>
+                  <button type="button" class="di"><i class="di__i di__i--alarm"></i>Alarms<em>2</em></button>
+                  <button type="button" class="di"><i class="di__i di__i--gear"></i>Parameters</button>
+                  <button type="button" class="di"><i class="di__i di__i--io"></i>I/O monitor</button>
+                  <button type="button" class="di"><i class="di__i di__i--globe"></i>Language</button>
+                </nav>
+                <div class="drawer__foot"><span id="m-count">closes in 10 s</span></div>
+              </aside>
+
+            </div>
+          </div>
+        </div>
+        <figcaption class="device__cap">
+          Live rebuild. The drawer keeps the original behaviour: it slides over the page rather than
+          replacing it, and closes itself after 10 s of inactivity.
+        </figcaption>
+      </figure>
+
+      <div class="notes">
+        <div class="note">
+          <h4>Problem</h4>
+          <p>The operator works outdoors with the machine in motion. They cannot hunt for a value,
+             and they cannot lose sight of the load while opening a menu.</p>
+        </div>
+        <div class="note">
+          <h4>Decision</h4>
+          <p>One number owns the screen &mdash; rope force, the value that decides whether the next move
+             is safe. Everything else is peripheral: bars for trends, digits for reference. The menu
+             slides <em>over</em> the screen and closes itself, so machine state is never more than
+             a glance away.</p>
+        </div>
+        <div class="note">
+          <h4>Result</h4>
+          <p>The primary reading stays legible at arm&rsquo;s length in daylight, and there is no screen
+             the operator can get stuck inside &mdash; every path returns home on its own.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- ---------- CASE 2 ---------- -->
+    <article class="case wrap reveal">
+      <div class="case__head">
+        <div>
+          <p class="case__meta">Winch controller &middot; fault handling</p>
+          <h3 class="case__title">Alarm manager</h3>
+        </div>
+        <p class="case__role"><span>Role</span> Fault taxonomy, message system, localisation</p>
+      </div>
+
+      <figure class="device">
+        <div class="device__bezel">
+          <div class="viewport">
+            <div class="screen screen--alarm" id="scr-alarm">
+
+              <div class="hmi-bar">
+                <div class="hmi-bar__id">ALARMS<i>&middot;</i><span id="a-count">2 active</span></div>
+                <div class="hmi-bar__pills">
+                  <span class="pill pill--alarm" id="a-flag"><i></i>FAULT</span>
+                </div>
+                <div class="hmi-bar__right">
+                  <div class="lang" role="group" aria-label="Language">
+                    <button type="button" class="lang__b is-on" data-lang="en">EN</button>
+                    <button type="button" class="lang__b" data-lang="de">DE</button>
+                    <button type="button" class="lang__b" data-lang="it">IT</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="alist" id="a-list"></div>
+
+              <div class="softkeys">
+                <button class="sk" type="button" id="a-hist">History</button>
+                <button class="sk" type="button" id="a-trig">Simulate fault</button>
+                <button class="sk sk--accent" type="button" id="a-ack">Acknowledge</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <figcaption class="device__cap">
+          Real fault codes from the machine&rsquo;s alarm table, in three of the locales it ships with.
+          Switch language, trigger a fault, acknowledge it.
+        </figcaption>
+      </figure>
+
+      <div class="notes">
+        <div class="note">
+          <h4>Problem</h4>
+          <p>Over two hundred fault conditions across four languages, read by a service technician
+             who may be seeing this machine for the first time.</p>
+        </div>
+        <div class="note">
+          <h4>Decision</h4>
+          <p>Every fault keeps its engineering code next to the plain-language text. The code is
+             what goes into the phone call to the office; the text is what gets the technician
+             moving. Colour carries severity, never information on its own.</p>
+        </div>
+        <div class="note">
+          <h4>Result</h4>
+          <p>Unacknowledged faults pulse, acknowledged ones stay listed but go quiet, and nothing
+             disappears until the condition itself clears.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- ---------- CASE 3 ---------- -->
+    <article class="case wrap reveal">
+      <div class="case__head">
+        <div>
+          <p class="case__meta">Diesel engine &middot; Stage V aftertreatment</p>
+          <h3 class="case__title">Emissions escalation</h3>
+        </div>
+        <p class="case__role"><span>Role</span> State machine, telltale set, operator messaging</p>
+      </div>
+
+      <figure class="device">
+        <div class="device__bezel">
+          <div class="viewport">
+            <div class="screen screen--eng" id="scr-eng">
+
+              <div class="hmi-bar">
+                <div class="hmi-bar__id">ENGINE<i>&middot;</i>AFTERTREATMENT</div>
+                <div class="hmi-bar__pills"><span class="pill" id="e-state"><i></i>NORMAL</span></div>
+                <div class="hmi-bar__right"><span class="hmi-bar__clock">1 248 h</span></div>
+              </div>
+
+              <div class="tell">
+                <div class="tt" data-tt="mil">
+                  <svg viewBox="0 0 40 32" aria-hidden="true"><path d="M6 20.2V13.4c0-1.1.9-2 2-2h3.3l2.6-3.4h9.4l2.1 3.4h3.3c1.9 0 3.3 1.5 3.3 3.3v5.5c0 1.4-1.1 2.6-2.6 2.6H8.6A2.6 2.6 0 0 1 6 20.2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path><path d="M16 15v4M20 13v6M24 16v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
+                  <span>Check engine</span>
+                </div>
+                <div class="tt" data-tt="dpf">
+                  <svg viewBox="0 0 40 32" aria-hidden="true"><rect x="7" y="11" width="26" height="13" rx="6.5" fill="none" stroke="currentColor" stroke-width="2"></rect><path d="M14 14.5v6M20 14.5v6M26 14.5v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path><path d="M11 8c1.6-1.7 3.2-1.7 4.8 0M24 8c1.6-1.7 3.2-1.7 4.8 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>
+                  <span>DPF load</span>
+                </div>
+                <div class="tt" data-tt="def">
+                  <svg viewBox="0 0 40 32" aria-hidden="true"><path d="M20 5.5c4.4 5.3 7.3 9.1 7.3 12.4a7.3 7.3 0 1 1-14.6 0c0-3.3 2.9-7.1 7.3-12.4Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path><path d="M16.6 19c.6 1.7 1.9 2.8 3.4 3.1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>
+                  <span>DEF level</span>
+                </div>
+                <div class="tt" data-tt="temp">
+                  <svg viewBox="0 0 40 32" aria-hidden="true"><path d="M17.6 17.8V8.6a2.4 2.4 0 0 1 4.8 0v9.2a4.9 4.9 0 1 1-4.8 0Z" fill="none" stroke="currentColor" stroke-width="2"></path><circle cx="20" cy="21.6" r="2.1" fill="currentColor"></circle></svg>
+                  <span>Exhaust temp</span>
+                </div>
+              </div>
+
+              <div class="eng-grid">
+                <div class="hbar">
+                  <div class="hbar__top"><span>DPF soot load</span><b id="e-dpf-v">48 %</b></div>
+                  <div class="hbar__track">
+                    <div class="hbar__fill" id="e-dpf"></div>
+                    <span class="hbar__tick" style="left:75%"></span>
+                    <span class="hbar__tick" style="left:90%"></span>
+                  </div>
+                </div>
+                <div class="hbar">
+                  <div class="hbar__top"><span>DEF tank</span><b id="e-def-v">62 %</b></div>
+                  <div class="hbar__track">
+                    <div class="hbar__fill hbar__fill--info" id="e-def"></div>
+                    <span class="hbar__tick" style="left:10%"></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="msg" id="e-msg">
+                <div class="msg__ico" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M12 3.4 22 20.6H2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path><path d="M12 10v4.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></path><circle cx="12" cy="17.6" r="1.2" fill="currentColor"></circle></svg>
+                </div>
+                <div class="msg__t"><b id="e-msg-t">System nominal</b><span id="e-msg-s">No operator action required.</span></div>
+              </div>
+
+              <div class="softkeys" id="e-keys">
+                <button class="sk is-on" type="button" data-step="0">Normal</button>
+                <button class="sk" type="button" data-step="1">Warning</button>
+                <button class="sk" type="button" data-step="2">Inducement</button>
+                <button class="sk sk--accent" type="button" data-step="3">Derate</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <figcaption class="device__cap">
+          Four regulated escalation stages. Step through them &mdash; telltales, message and severity
+          colour all move together.
+        </figcaption>
+      </figure>
+
+      <div class="notes">
+        <div class="note">
+          <h4>Problem</h4>
+          <p>Emissions law dictates the escalation. The operator cares about one thing: how long
+             until the machine stops earning money, and what prevents that.</p>
+        </div>
+        <div class="note">
+          <h4>Decision</h4>
+          <p>Each stage answers the same three questions in the same place &mdash; what is wrong, how
+             urgent, what to do. The telltale row never reflows, so a changed icon is noticed by
+             shape and position rather than by reading.</p>
+        </div>
+        <div class="note">
+          <h4>Result</h4>
+          <p>One consistent frame from advisory to derate. The operator learns the layout once and
+             reads state changes at a glance.</p>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ============================ APPROACH ============================ -->
+  <section id="approach" class="section section--tint">
+    <div class="wrap">
+      <h2 class="sec"><span class="sec__idx">02</span><span class="sec__t">Approach</span></h2>
+      <p class="sec__lede">
+        These are not phones. The hardware is fixed, often years old, and it will outlive several
+        redesigns. That is the interesting part &mdash; the constraints are real, and they do most
+        of the arguing for you.
+      </p>
+
+      <div class="cards">
+        <div class="card">
+          <span class="card__n">01</span>
+          <h3>One question per screen</h3>
+          <p>An operator arrives at a screen with a question. If the screen answers two, it answers
+             neither quickly. Secondary values stay &mdash; but they stay small.</p>
+        </div>
+        <div class="card">
+          <span class="card__n">02</span>
+          <h3>Colour is severity, never data</h3>
+          <p>Green, amber and red mean exactly one thing each, on every screen. Anything colour says
+             is also said by shape, position or text &mdash; sunlight and colour-blindness both take
+             colour away.</p>
+        </div>
+        <div class="card">
+          <span class="card__n">03</span>
+          <h3>No dead ends</h3>
+          <p>Every screen returns home by itself. Menus time out, dialogs default to the safe answer.
+             Nobody should have to power-cycle a machine to leave a submenu.</p>
+        </div>
+        <div class="card">
+          <span class="card__n">04</span>
+          <h3>Built for gloves</h3>
+          <p>Touch targets sized for a gloved thumb on a machine that is vibrating. Fewer, larger
+             controls beat a dense grid every time.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ SYSTEM ============================ -->
+  <section id="system" class="section">
+    <div class="wrap">
+      <h2 class="sec"><span class="sec__idx">03</span><span class="sec__t">The system underneath</span></h2>
+      <p class="sec__lede">
+        The screens share one vocabulary, so a new page costs a day instead of a week &mdash; and an
+        operator moving between machines is never re-learning.
+      </p>
+
+      <div class="sys">
+        <div class="sys__block">
+          <h4>Signal palette</h4>
+          <ul class="swatches">
+            <li><i style="--c:#3ED598"></i><b>Safe</b><span>Within limits</span></li>
+            <li><i style="--c:#FFB020"></i><b>Warning</b><span>Action soon</span></li>
+            <li><i style="--c:#FF4A38"></i><b>Alarm</b><span>Action now</span></li>
+            <li><i style="--c:#4CC9F0"></i><b>Info</b><span>Neutral state</span></li>
+            <li><i style="--c:#8695A0"></i><b>Inactive</b><span>Not available</span></li>
+          </ul>
+        </div>
+
+        <div class="sys__block">
+          <h4>Type on glass</h4>
+          <div class="typespec">
+            <div><b class="ts-a">18.4</b><span>Primary value &middot; 34 px &middot; tabular</span></div>
+            <div><b class="ts-b">Rope force</b><span>Label &middot; 19 px</span></div>
+            <div><b class="ts-c">E006_SF6</b><span>Fault code &middot; 13 px &middot; mono</span></div>
+          </div>
+        </div>
+
+        <div class="sys__block">
+          <h4>Rules that held</h4>
+          <ul class="rules">
+            <li><span>4 px</span>Everything lands on the grid</li>
+            <li><span>56 px</span>Minimum touch target</li>
+            <li><span>1 s</span>Blink period, anything unacknowledged</li>
+            <li><span>10 s</span>Menu inactivity timeout</li>
+            <li><span>3</span>Maximum navigation depth</li>
+            <li><span>4</span>Locales, laid out for the longest string</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ CONTACT ============================ -->
+  <section id="contact" class="section section--end">
+    <div class="wrap">
+      <h2 class="sec"><span class="sec__idx">04</span><span class="sec__t">Contact</span></h2>
+      <p class="contact__lede">Open to work on control systems, HMI and machine interfaces.</p>
+      <div class="contact__links">
+        <a class="clink" href="https://www.linkedin.com/in/YOUR-LINKEDIN/" target="_blank" rel="noopener">
+          <span>LinkedIn</span><b>Connect &rarr;</b>
+        </a>
+        <a class="clink" href="mailto:gaiottogiovanni2004@gmail.com">
+          <span>Email</span><b>gaiottogiovanni2004@gmail.com</b>
+        </a>
+        <a class="clink" href="https://github.com/YOUR-GITHUB" target="_blank" rel="noopener">
+          <span>GitHub</span><b>@YOUR-GITHUB &rarr;</b>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__in">
+    <span>&copy; <span id="yr">2026</span> Giovanni Gaiotto</span>
+    <span class="foot__note">Built by hand. No framework, no tracking, no analytics.</span>
+  </div>
+</footer>
+
+<script src="assets/hmi.js" defer></script>
+</body>
+</html>
